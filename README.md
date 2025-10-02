@@ -17,3 +17,4 @@ This folder contains the CR manifests to create Service Mesh v3.x and steps to m
 ## 04-clean-up-servicemesh-2-6
 After migrating to Service Mesh 3.x, delete the Service Mesh 2.6 CR and related resources.
 
+![Diagram](https://github.com/SupawitAz/openshift-servicemesh-2.6-to-3.0-migration/blob/main/image/servicemesh3.png)
