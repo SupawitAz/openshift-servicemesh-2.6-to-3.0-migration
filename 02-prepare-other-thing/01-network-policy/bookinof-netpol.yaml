@@ -1,0 +1,32 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: istio-mesh
+  namespace: bookinfo-demo
+spec:
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              #service-mesh: enabled
+              istio-injection: enabled
+  podSelector: {}
+  policyTypes:
+    - Ingress
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: expose-route-basic
+  namespace: bookinfo-demo
+spec:
+  podSelector:
+    matchLabels:
+      maistra.io/expose-route: "true"
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              network.openshift.io/policy-group: ingress
+  policyTypes:
+    - Ingress

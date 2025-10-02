@@ -1,0 +1,18 @@
+apiVersion: sailoperator.io/v1
+kind: Istio
+metadata:
+  name: ossm-3  
+spec:
+  updateStrategy:
+    type: RevisionBased
+  namespace: istio-system   
+  version: v1.26.4
+  values:
+    meshConfig:
+      extensionProviders:
+      - name: prometheus
+        prometheus: {}
+      - name: otel
+        opentelemetry:
+          port: 4317
+          service: otel-collector.istio-system.svc.cluster.local

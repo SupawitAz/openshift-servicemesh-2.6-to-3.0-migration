@@ -1,0 +1,41 @@
+apiVersion: tempo.grafana.com/v1alpha1
+kind: TempoStack
+metadata:
+  name: istio-tracing-tempo
+  namespace: istio-tracing-system
+spec:
+  #observability:
+  #  tracing:
+  #    jaeger_agent_endpoint: 'localhost:6831'
+  #tenants:
+  #  authentication:
+  #    - tenantId: f78bf974-aee2-47e8-8bb4-9ba41a41824a
+  #      tenantName: dev
+  #    - tenantId: ac4dd897-40da-4403-9cab-53905e22ef78
+  #      tenantName: prod 
+  #  mode: openshift
+  managementState: Managed
+  template:
+    #gateway:
+    #  enabled: true
+    queryFrontend:
+      jaegerQuery:
+        enabled: true      
+        ingress:
+          type: route
+  storage:
+    secret:
+      name: tempo-minio
+      type: s3
+    tls:
+      enabled: false
+      # caName: minio-openshift-logging-pool-0-ca
+---
+apiVersion: v1
+data:
+  config.env: ZXhwb3J0IE1JTklPX1JPT1RfVVNFUj0ibWluaW8iCmV4cG9ydCBNSU5JT19ST09UX1BBU1NXT1JEPSJRTjRaWEtNU1BEWEU0RVFGWDlDUlJTWlBJS0pISyI=
+kind: Secret
+metadata:
+  name: openshift-logging-env-configuration
+  namespace: minio-istio-tracing
+type: Opaque

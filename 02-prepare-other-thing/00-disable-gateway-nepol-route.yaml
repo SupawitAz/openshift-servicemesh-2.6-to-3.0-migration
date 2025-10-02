@@ -1,0 +1,45 @@
+apiVersion: maistra.io/v2
+kind: ServiceMeshControlPlane
+metadata:
+  name: basic
+  namespace: istio-system
+spec:
+  addons:
+    grafana:
+      enabled: false 
+    kiali:
+      enabled: false 
+    prometheus:
+      enabled: false 
+  gateways:
+    egress:
+      enabled: false # disable
+    ingress:
+      enabled: false # disable
+    openshiftRoute:
+      enabled: false # disable
+  meshConfig: 
+    extensionProviders:
+    - name: prometheus
+      prometheus: {}
+    - name: otel
+      opentelemetry:
+        port: 4317
+        service: otel-collector.istio-system.svc.cluster.local
+  policy:
+    type: Istiod
+  profiles:
+  - default
+  proxy:
+    accessLogging:
+      file:
+        name: /dev/stdout
+    injection:
+      autoInject: true 
+  security:
+    manageNetworkPolicy: false # disable
+  telemetry:
+    type: Istiod
+  tracing: 
+    type: None
+  version: v2.6

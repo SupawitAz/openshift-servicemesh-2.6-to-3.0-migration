@@ -1,0 +1,8 @@
+apiVersion: sailoperator.io/v1
+kind: IstioRevisionTag
+metadata:
+  name: default
+spec:
+  targetRef:
+    kind: IstioRevision
+    name: ossm-3-v1-26-4

@@ -1,0 +1,55 @@
+kind: OpenTelemetryCollector
+apiVersion: opentelemetry.io/v1beta1
+metadata:
+ name: otel
+ namespace: istio-system
+spec:
+ podAnnotations:
+   sidecar.istio.io/inject: "false"
+ config:
+   exporters:
+     otlp:
+       endpoint: "tempo-istio-tracing-tempo-distributor.istio-tracing-system.svc.cluster.local:4317"
+       #endpoint: tempo-istio-tracing-tempo-gateway.istio-tracing-system.svc.cluster.local:8090
+       tls:
+         insecure: true
+       #  ca_file: "/var/run/secrets/kubernetes.io/serviceaccount/service-ca.crt"
+       #auth:
+       #  authenticator: bearertokenauth
+       #headers:
+       #  X-Scope-OrgID: "prod"
+   #extensions:
+   #  bearertokenauth:
+   #    filename: "/var/run/secrets/kubernetes.io/serviceaccount/token"     
+   receivers:
+     otlp:
+       protocols:
+         grpc:
+           endpoint: 0.0.0.0:4317
+         http: {}
+   service:
+     telemetry:
+       logs:
+         level: "DEBUG"
+         development: true
+         encoding: "json"
+     #extensions: [bearertokenauth]
+     pipelines:
+       traces:
+         exporters:
+           - otlp
+         receivers:
+           - otlp
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: tempostack-traces
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: tempostack-traces-write
+subjects:
+  - kind: ServiceAccount
+    name: otel-collector
+    namespace: istio-system

@@ -1,0 +1,38 @@
+apiVersion: maistra.io/v1
+kind: ServiceMeshMemberRoll
+metadata:
+  creationTimestamp: "2025-10-02T10:46:13Z"
+  finalizers:
+  - maistra.io/istio-operator
+  generation: 1
+  name: default
+  namespace: istio-system
+  resourceVersion: "144429170"
+  uid: f457bcce-3db5-4526-ad87-93c5e206995c
+spec:
+  members:
+  - bookinfo-demo
+status:
+  annotations:
+    configuredMemberCount: 1/1
+  conditions:
+  - lastTransitionTime: "2025-10-02T11:16:25Z"
+    message: All namespaces have been configured successfully
+    reason: Configured
+    status: "True"
+    type: Ready
+  configuredMembers:
+  - bookinfo-demo
+  memberStatuses:
+  - conditions:
+    - lastTransitionTime: "2025-10-02T10:46:14Z"
+      status: "True"
+      type: Reconciled
+    namespace: bookinfo-demo
+  members:
+  - bookinfo-demo
+  meshGeneration: 6
+  meshReconciledVersion: 2.6.10-1-6
+  observedGeneration: 1
+  pendingMembers: []
+  terminatingMembers: []

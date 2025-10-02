@@ -1,0 +1,79 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: istio-mesh
+  namespace: istio-system
+spec:
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              #service-mesh: enabled
+              istio-injection: enabled
+  podSelector: {}
+  policyTypes:
+    - Ingress
+---
+#apiVersion: networking.k8s.io/v1
+#kind: NetworkPolicy
+#metadata:
+#  name: istio-mesh-migrated-tmp
+#  namespace: istio-system
+#spec:
+#  ingress:
+#    - from:
+#        - namespaceSelector:
+#            matchLabels:
+#              istio.io/rev: ossm-3-v1-24-5
+#              #maistra.io/member-of: istio-system
+#              #service-mesh: enabled
+#  podSelector: {}
+#  policyTypes:
+#    - Ingress
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: expose-route-basic
+  namespace: istio-system
+spec:
+  podSelector:
+    matchLabels:
+      maistra.io/expose-route: "true"
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              network.openshift.io/policy-group: ingress
+  policyTypes:
+    - Ingress
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: istiod-basic
+  namespace: istio-system
+spec:
+  ingress:
+    - {}
+  podSelector:
+    matchLabels:
+      app: istiod
+      # istio.io/rev: basic
+  policyTypes:
+    - Ingress
+#---
+#apiVersion: networking.k8s.io/v1
+#kind: NetworkPolicy
+#metadata:
+#  name: istiod-basic-ingressgateway
+#  namespace: istio-system
+#spec:
+#  ingress:
+#  - {}
+#  podSelector:
+#    matchLabels:
+#      app: istio-ingressgateway
+#      istio: ingressgateway
+#  policyTypes:
+#  - Ingress
